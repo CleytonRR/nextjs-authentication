@@ -1,3 +1,5 @@
+import Form from "next/form";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,10 +17,15 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
+type IRegisterFormProps = {
+  registerAction: (formData: FormData) => Promise<void>;
+} & React.ComponentProps<"div">;
+
 export function RegisterForm({
   className,
+  registerAction,
   ...props
-}: React.ComponentProps<"div">) {
+}: IRegisterFormProps) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -29,17 +36,24 @@ export function RegisterForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <Form action={registerAction} noValidate>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="name">name</FieldLabel>
-                <Input id="name" type="text" placeholder="john" required />
+                <Input
+                  id="name"
+                  type="text"
+                  name="name"
+                  placeholder="john"
+                  required
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="m@example.com"
                   required
                 />
@@ -49,6 +63,7 @@ export function RegisterForm({
                 <Input
                   id="password"
                   type="password"
+                  name="password"
                   placeholder="*********"
                   required
                 />
@@ -60,7 +75,7 @@ export function RegisterForm({
                 </FieldDescription>
               </Field>
             </FieldGroup>
-          </form>
+          </Form>
         </CardContent>
       </Card>
     </div>
